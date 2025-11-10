@@ -1,0 +1,52 @@
+.sidebarContainer {
+    /* border-right: 6px solid #e16105; */
+}
+
+.sidebarMenu {
+    /* margin: 24px 16px; */
+    padding: 5px;
+}
+
+.sidebarHeader {
+    padding: 20px 0 10px 20px;
+}
+
+.appTitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #58a6ff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.appTitle i {
+    font-size: 18px;
+}
+
+.appSubtitle {
+    font-size: 12px;
+    color: #8b949e;
+    margin: 4px 0 0 0;
+}
+
+/* Header layout to place title beside collapse button */
+.headerBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px; /* keep inner spacing without affecting provided padding:0 */
+}
+
+.headerTitle {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.horizontalDivider {
+    width: 90%;
+    height: 2px;
+    background-color: #3a3a3a;
+    margin: 20px 0px 0 20px;
+}

@@ -1,0 +1,7 @@
+.repoSearchInput :global(.ant-input) {
+    font-size: 15px;
+}
+
+.repoSearchInput :global(.ant-input::placeholder) {
+    font-size: 13px;
+}
