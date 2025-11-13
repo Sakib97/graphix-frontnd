@@ -11,29 +11,47 @@ import { Button, Layout, Menu, theme } from 'antd';
 import RepoParseBox from '../components/RepoParseBox.jsx';
 import RepoList from '../components/RepoList.jsx';
 import NewChatBtn from '../components/NewChatBtn.jsx';
+import ChatBox from '../components/ChatBox.jsx';
 const { Header, Sider, Content } = Layout;
 
 
 const siderStyle = {
     overflow: 'auto',
     height: '100vh',
-    position: 'sticky',
+    position: 'fixed',
     insetInlineStart: 0,
     top: 0,
     bottom: 0,
     scrollbarWidth: 'thin',
     scrollbarGutter: 'stable',
+    zIndex: 1000,
 };
 
 const SideBar = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+    // Handle window resize to detect mobile view
+    React.useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <div>
+            {/* Backdrop overlay for mobile */}
+            {isMobile && !collapsed && (
+                <div 
+                    className={styles.backdrop}
+                    onClick={() => setCollapsed(true)}
+                />
+            )}
             <Layout>
                 <Sider
                     style={siderStyle}
@@ -111,7 +129,16 @@ const SideBar = () => {
 
                 </Sider>
                 <Layout>
-                    <Header className={styles.headerBar} style={{ padding: 0, background: colorBgContainer }}>
+                    <Header className={styles.headerBar} style={{ 
+                        padding: 0, 
+                        background: colorBgContainer, 
+                        position: 'fixed', 
+                        top: 0, 
+                        right: 0, 
+                        left: isMobile ? 0 : (collapsed ? 0 : 290), 
+                        zIndex: 50, 
+                        transition: 'left 0.2s' 
+                    }}>
                         <Button
                             type="text"
                             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -128,15 +155,18 @@ const SideBar = () => {
                     </Header>
                     <Content
                         style={{
-                            margin: '24px 16px',
+                            margin: '88px 16px 100px 16px',
                             padding: 24,
-                            minHeight: '100vh',
+                            minHeight: 'calc(100vh - 188px)',
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
+                            marginLeft: isMobile ? '16px' : (collapsed ? '16px' : '306px'),
+                            transition: 'margin-left 0.2s',
                         }}
                     >
-                        Content
+                        lorem5000
                     </Content>
+                    <ChatBox collapsed={isMobile ? true : collapsed} />
                 </Layout>
             </Layout>
         </div>
