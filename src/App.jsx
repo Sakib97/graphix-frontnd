@@ -12,8 +12,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/new" element={<NewHomePage />} />
+      <Route path="/old" element={<HomePage />} />
+      <Route path="/" element={<NewHomePage />} />
     </Routes>
   )
 }
