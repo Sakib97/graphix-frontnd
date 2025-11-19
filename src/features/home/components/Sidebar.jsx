@@ -6,12 +6,18 @@ import {
     UploadOutlined,
     UserOutlined,
     VideoCameraOutlined,
+    MoreOutlined,
+    LogoutOutlined,
 } from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
+import { Button, Layout, Menu, theme, Dropdown } from 'antd';
 import RepoParseBox from '../components/RepoParseBox.jsx';
 import RepoList from '../components/RepoList.jsx';
 import NewChatBtn from '../components/NewChatBtn.jsx';
+import SignupBtn from '../../auth/components/SignupBtn.jsx';
 import ChatBox from '../components/ChatBox.jsx';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthProvider.jsx';
+import { supabase } from '../../../config/supabaseClient.js';
 const { Header, Sider, Content } = Layout;
 
 
@@ -27,12 +33,53 @@ const siderStyle = {
     zIndex: 1000,
 };
 
-const SideBar = () => {
+const SideBar = ({ user }) => {
     const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    // Handle logout
+    const [logoutLoading, setLogoutLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const { setUser, setUserMeta, setLoading } = useAuth();
+    const handleLogout = async () => {
+        try {
+            setLogoutLoading(true);
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error("Error during sign-out:", error);
+                setError("Failed to log out. Please try again.");
+                setLogoutLoading(false);
+                return;
+            }
+            // Clear user context
+            setUser(null);
+            setUserMeta(null);
+            setLoading(false);
+
+            navigate('/signup');
+        } catch (err) {
+            console.error("Unexpected logout error:", err);
+            setError("An unexpected error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+            setLogoutLoading(false);
+        }
+    };
+
+    // Dropdown menu items
+    const menuItems = [
+        {
+            key: 'logout',
+            icon: <LogoutOutlined />,
+            label: logoutLoading ? 'Logging out...' : 'Logout',
+            onClick: handleLogout,
+            disabled: logoutLoading,
+        },
+    ];
 
     // Handle window resize to detect mobile view
     React.useEffect(() => {
@@ -47,7 +94,7 @@ const SideBar = () => {
         <div>
             {/* Backdrop overlay for mobile */}
             {isMobile && !collapsed && (
-                <div 
+                <div
                     className={styles.backdrop}
                     onClick={() => setCollapsed(true)}
                 />
@@ -88,7 +135,7 @@ const SideBar = () => {
                             <div>
                                 <RepoParseBox />
                             </div>
-                            <div className={styles.horizontalDivider}/>
+                            <div className={styles.horizontalDivider} />
                         </div>
 
 
@@ -96,7 +143,49 @@ const SideBar = () => {
                             <div style={{ padding: '0px 20px 0px 20px' }}>
                                 <NewChatBtn />
                             </div>
-                            <div className={styles.horizontalDivider}/>
+                            <div className={styles.horizontalDivider} />
+                            <div>
+                                {user ? (
+                                    <div className={styles.userProfile}>
+                                        <div className={styles.userInfo}>
+                                            <div className={styles.userAvatar}>
+                                                {/* <UserOutlined /> */}
+                                                <img
+                                                    src={
+                                                        user.user_metadata?.avatar_url ||
+                                                        "https://via.placeholder.com/100/cccccc/000000?text=User"
+                                                    }
+                                                    alt="avatar"
+                                                    className={styles.userAvatar}
+                                                    referrerPolicy="no-referrer"
+                                                />
+                                            </div>
+                                            <div className={styles.userDetails}>
+                                                <div className={styles.userName}>
+                                                    {user.user_metadata.full_name || 'User'}
+                                                </div>
+                                                <div className={styles.userEmail}>
+                                                    {user.email}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Dropdown
+                                            menu={{ items: menuItems }}
+                                            trigger={['click']}
+                                            placement="topRight"
+                                            overlayClassName={styles.dropdownMenu}
+                                        >
+                                            <Button
+                                                type="text"
+                                                icon={<MoreOutlined />}
+                                                className={styles.moreButton}
+                                            />
+                                        </Dropdown>
+                                    </div>
+                                ) : (
+                                    <SignupBtn />
+                                )}
+                            </div>
                         </div>
 
 
@@ -129,15 +218,15 @@ const SideBar = () => {
 
                 </Sider>
                 <Layout>
-                    <Header className={styles.headerBar} style={{ 
-                        padding: 0, 
-                        background: colorBgContainer, 
-                        position: 'fixed', 
-                        top: 0, 
-                        right: 0, 
-                        left: isMobile ? 0 : (collapsed ? 0 : 290), 
-                        zIndex: 50, 
-                        transition: 'left 0.2s' 
+                    <Header className={styles.headerBar} style={{
+                        padding: 0,
+                        background: colorBgContainer,
+                        position: 'fixed',
+                        top: 0,
+                        right: 0,
+                        left: isMobile ? 0 : (collapsed ? 0 : 290),
+                        zIndex: 50,
+                        transition: 'left 0.2s'
                     }}>
                         <Button
                             type="text"
@@ -164,7 +253,7 @@ const SideBar = () => {
                             transition: 'margin-left 0.2s',
                         }}
                     >
-                        lorem5000
+                        Lorem, ipsum.
                     </Content>
                     <ChatBox collapsed={isMobile ? true : collapsed} />
                 </Layout>

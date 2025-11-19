@@ -1,7 +1,3 @@
-.sidebarContainer {
-    /* border-right: 6px solid #e16105; */
-}
-
 .sidebarMenu {
     /* margin: 24px 16px; */
     padding: 5px;
@@ -71,4 +67,111 @@
     to {
         opacity: 1;
     }
+}
+
+/* User Profile Section */
+.userProfile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.userProfile:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.userName {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6edf3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userEmail {
+    font-size: 12px;
+    color: #8b949e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.moreButton {
+    /* color: #8b949e; */
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.moreButton:hover {
+    color: #ffffff !important;
+    /* background-color: rgba(255, 255, 255, 0.1) !important; */
+    background-color: rgb(87, 85, 85) !important;
+    border: none !important;
+}
+
+/* Dropdown Menu Hover Styles */
+.dropdownMenu :global(.ant-dropdown-menu-item) {
+    padding: 10px 16px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.dropdownMenu :global(.ant-dropdown-menu-item:hover) {
+    background-color: #f5f5f5 !important;
+}
+
+.dropdownMenu :global(.ant-dropdown-menu-item:hover .ant-dropdown-menu-title-content) {
+    color: #ff4d4f !important;
+    font-weight: 700;
+}
+
+.dropdownMenu :global(.ant-dropdown-menu-item:hover .anticon) {
+    color: #ff4d4f !important;
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+.dropdownMenu :global(.ant-dropdown-menu-item-disabled:hover) {
+    background-color: transparent !important;
+    cursor: not-allowed;
+}
+
+.dropdownMenu :global(.ant-dropdown-menu-item-disabled:hover .ant-dropdown-menu-title-content),
+.dropdownMenu :global(.ant-dropdown-menu-item-disabled:hover .anticon) {
+    color: rgba(0, 0, 0, 0.25) !important;
+    transform: none;
 }
