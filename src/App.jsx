@@ -7,17 +7,21 @@ import HomePage from './features/home/pages/HomePage'
 import NewHomePage from './features/home/pages/NewHomePage'
 import SignupPage from './features/auth/pages/SignupPage'
 import AuthRedirect from './components/common/AuthRedirect'
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <Routes>
-      <Route path="/old" element={<HomePage />} />
-      <Route path="/" element={<NewHomePage />} />
-      <Route path="/signup" element={ <AuthRedirect><SignupPage /></AuthRedirect>} />
-    </Routes>
+    <>
+      <Toaster />
+      <Routes>
+        <Route path="/old" element={<HomePage />} />
+        <Route path="/" element={<NewHomePage />} />
+        <Route path="/signup" element={ <AuthRedirect><SignupPage /></AuthRedirect>} />
+      </Routes>
+    </>
   )
 }
 

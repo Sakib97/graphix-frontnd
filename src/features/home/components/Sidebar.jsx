@@ -36,6 +36,7 @@ const siderStyle = {
 const SideBar = ({ user }) => {
     const [collapsed, setCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [repoData, setRepoData] = useState(null);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -90,6 +91,11 @@ const SideBar = ({ user }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Handle successful repo parsing
+    const handleParseSuccess = (data) => {
+        setRepoData(data);
+    };
+
     return (
         <div>
             {/* Backdrop overlay for mobile */}
@@ -133,7 +139,7 @@ const SideBar = ({ user }) => {
                                 <RepoList />
                             </div>
                             <div>
-                                <RepoParseBox />
+                                <RepoParseBox onParseSuccess={handleParseSuccess} />
                             </div>
                             <div className={styles.horizontalDivider} />
                         </div>
@@ -253,7 +259,32 @@ const SideBar = ({ user }) => {
                             transition: 'margin-left 0.2s',
                         }}
                     >
-                        Lorem, ipsum.
+                        {repoData ? (
+                            <div>
+                                <h2 style={{ marginBottom: '20px' }}>Repository Parse Result</h2>
+                                <pre style={{
+                                    background: '#f5f5f5',
+                                    padding: '20px',
+                                    borderRadius: '8px',
+                                    overflow: 'auto',
+                                    maxHeight: '70vh'
+                                }}>
+                                    {JSON.stringify(repoData, null, 2)}
+                                </pre>
+                            </div>
+                        ) : (
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                height: '100%',
+                                color: '#8c8c8c'
+                            }}>
+                                <i className="fi fi-rr-search" style={{ fontSize: '48px', marginBottom: '16px' }}></i>
+                                <p style={{ fontSize: '16px' }}>Enter a repository URL to parse First</p>
+                            </div>
+                        )}
                     </Content>
                     <ChatBox collapsed={isMobile ? true : collapsed} />
                 </Layout>

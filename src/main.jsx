@@ -6,13 +6,17 @@ import '@flaticon/flaticon-uicons/css/all/all.css';
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthProvider.jsx';
+import CustomQueryClientProvider from './context/QueryClientProvider.jsx';
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AuthProvider>
+    <CustomQueryClientProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
+    </CustomQueryClientProvider>
   </StrictMode>,
 )
